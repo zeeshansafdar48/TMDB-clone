@@ -33,3 +33,16 @@
   background-size: 1200px 100%;
   animation: shimmer 1.5s infinite linear;
 }
+/* 
+body {
+  background-color: #141414;
+  color: #fff;
+  font-family: "Roboto", sans-serif;
+}
+.card {
+  background-color: #1f1f1f;
+  transition: transform 0.3s;
+}
+.card:hover {
+  transform: scale(1.1);
+} */

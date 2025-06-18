@@ -4,7 +4,7 @@ import InfiniteScroll from "react-infinite-scroll-component";
 
 import PageHeading from "../../components/PageHeading";
 import ProgressLoader from "../../components/ProgressLoader";
-import { fetchPopularMovies } from "../../services/movies";
+import { fetchPopularMovies, fetchSearchedMovies } from "../../services/movies";
 import { MOVIES_IMAGE_BASE_URL } from "../../constants";
 import { formatDate } from "../../utils/formatDate";
 import CircularProgressBar from "./CircularProgressBar";
@@ -22,7 +22,7 @@ function PopularMovies() {
   });
 
   useEffect(() => {
-    async function fetchPeople() {
+    async function fetchMovies() {
       setIsLoading(true);
       try {
         const data = await fetchPopularMovies(movies?.page || 1);
@@ -45,22 +45,52 @@ function PopularMovies() {
           isDataFetchedOnInitialLoad = true;
         }
       } catch (error) {
-        console.log("==> ~ fetchPeople ~ error:", error);
+        console.log("==> ~ fetchMovies ~ error:", error);
       }
     }
 
     if (isDataFetchedOnInitialLoad && movies?.page === 1) return;
 
-    fetchPeople();
+    fetchMovies();
   }, [movies?.page]);
 
-  async function handleLoadMore() {
+  async function handleLoadMore(isReset) {
     setMovies((prevState) => {
       return {
         ...prevState,
-        page: prevState.page + 1
+        page: isReset ? 1 : prevState.page + 1
       };
     });
+  }
+
+  async function handleSearchedMovies({ genres }) {
+    setIsLoading(true);
+    try {
+      const data = await fetchSearchedMovies({ genres });
+
+      if (data.results) {
+        setMovies(data);
+      }
+    } catch (error) {
+      console.log("==> ~ fetchMovies ~ error:", error);
+    } finally {
+      setIsLoading(false);
+    }
+  }
+
+  async function resetMoviesData() {
+    setIsLoading(true);
+    try {
+      const data = await fetchPopularMovies(1);
+
+      if (data.results) {
+        setMovies(data);
+      }
+    } catch (error) {
+      console.log("==> ~ fetchMovies ~ error:", error);
+    } finally {
+      setIsLoading(false);
+    }
   }
 
   return (
@@ -68,7 +98,7 @@ function PopularMovies() {
       {isLoading && <ProgressLoader />}
       <PageHeading>Popular Movies</PageHeading>
       <div className="flex gap-10">
-        <Search />
+        <Search handleSearchedMovies={handleSearchedMovies} resetMoviesData={resetMoviesData} />
         <InfiniteScroll
           dataLength={movies?.results.length}
           next={handleLoadMore}

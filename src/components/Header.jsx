@@ -2,16 +2,13 @@
 import { Link } from "react-router-dom";
 
 import { paths } from "../pages/routes";
-import logo from "../assets/images/logo.svg";
 import { useState } from "react";
 
 function Header() {
   return (
     <div className="bg-primary-500 text-white px-24 py-5 h-16">
       <ul className="flex gap-10 items-center">
-        <NavItem to={paths.home}>
-          <img src={logo} alt="Logo" height={100} width={180} />
-        </NavItem>
+        <NavItem to={paths.root}>Home</NavItem>
         <MoviesItems />
         <PeopleItems />
       </ul>

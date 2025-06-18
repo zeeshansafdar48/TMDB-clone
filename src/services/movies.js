@@ -8,6 +8,16 @@ async function fetchPopularMovies(page) {
   return data;
 }
 
+async function fetchSearchedMovies({ genres }) {
+  let queryParams = ``;
+  if (genres?.length > 0) queryParams += `&with_genres=${genres.join(",")}`;
+  const url = `${BASE_URL}/discover/movie?language=en-US?${queryParams}`;
+
+  const result = await fetch(url, GET_OPTIONS);
+  const data = await result.json();
+  return data;
+}
+
 async function fetchMovieGenres() {
   const url = `${BASE_URL}/genre/movie/list?language=en-US`;
 
@@ -16,4 +26,4 @@ async function fetchMovieGenres() {
   return data;
 }
 
-export { fetchPopularMovies, fetchMovieGenres };
+export { fetchPopularMovies, fetchMovieGenres, fetchSearchedMovies };

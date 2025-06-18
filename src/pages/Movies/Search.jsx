@@ -4,7 +4,7 @@ import Button from "../../components/Button";
 import { BUTTON_TYPES } from "../../constants";
 import { fetchMovieGenres } from "../../services/movies";
 
-function Search() {
+function Search({ handleSearchedMovies, resetMoviesData }) {
   const [genres, setGenres] = useState([]);
   const [selectedGenres, setSelectedGenres] = useState([]);
 
@@ -26,6 +26,11 @@ function Search() {
     });
   }
 
+  function handleClearSearch() {
+    setSelectedGenres([]);
+    resetMoviesData();
+  }
+
   return (
     <div className="w-52">
       <div>
@@ -35,7 +40,15 @@ function Search() {
           selectedGenres={selectedGenres}
         />
       </div>
-      <Button type={BUTTON_TYPES.GRADIENT}>Search</Button>
+      <Button
+        type={BUTTON_TYPES.GRADIENT}
+        onClick={() => handleSearchedMovies({ genres: selectedGenres })}
+      >
+        Search
+      </Button>
+      <Button type={BUTTON_TYPES.DEFAULT} onClick={handleClearSearch}>
+        Clear Search
+      </Button>
     </div>
   );
 }

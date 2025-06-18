@@ -6,7 +6,6 @@ import PopularPeople from "./PopularPeople.jsx";
 
 export const paths = {
   root: "/",
-  home: "/home",
   popularPeople: "/popular-people",
   popularMovies: "/movies/popular"
 };
@@ -18,7 +17,7 @@ export const routes = [
     errorElement: <ErrorPage />,
     children: [
       {
-        path: paths.home,
+        path: paths.root,
         element: <Home />
       },
       {
